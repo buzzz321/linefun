@@ -126,8 +126,8 @@ void moveLines(std::vector<glm::vec3>& lines) {
 
 int main() {
 	std::vector<glm::vec3> lines = {
-	glm::vec3(0.0f,  0.0f, 70.0f),
-	glm::vec3(0.5f,  0.5f, 70.0f),
+	glm::vec3(0.0f,  0.0f, 1.0f),
+	glm::vec3(100.5f,  100.5f, 1.0f),
 	};
 
 	float deltaTime = 0.0f; // Time between current frame and last frame
@@ -173,19 +173,19 @@ int main() {
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 
-	unsigned int VAO;
+	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
 
-	unsigned int VBO;
+	GLuint VBO;
 	glGenBuffers(1, &VBO);
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, lines.size(), lines.data(),
+	glBufferData(GL_ARRAY_BUFFER, lines.size()*sizeof(glm::vec3), lines.data(),
 		GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, lines.size() * sizeof(glm::vec3), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  sizeof(glm::vec3), (void*)0);
 
 	auto vertexShader = loadShaders(vertexShaderSource, GL_VERTEX_SHADER);
 	auto fragmentShader = loadShaders(fragmentShaderSource, GL_FRAGMENT_SHADER);
@@ -195,7 +195,7 @@ int main() {
 	glm::mat4 projection = glm::perspective(
 		fov, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, zFar);
 
-	moveLines(lines);
+	//moveLines(lines);
 	std::cout << "zFar=" << zFar << std::endl;
 	for (auto& poly : lines) {
 		std::cout << poly.x << " " << poly.y << " " << poly.z << std::endl;
@@ -208,7 +208,7 @@ int main() {
 
 		processInput(window);
 
-		moveLines(lines);
+		//moveLines(lines);
 
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
