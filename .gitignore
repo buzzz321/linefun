@@ -49,3 +49,6 @@ release/
 .cmake/
 *.ninja*
 KHR/khrplatform.h
+*.idx
+cmake_install.cmake
+Makefile
