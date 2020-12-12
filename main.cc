@@ -255,9 +255,6 @@ int main() {
 			}
 			
 		}
-		
-
-	
 
 	glfwSwapBuffers(window);
 	// Keep running
