@@ -195,11 +195,12 @@ int main() {
 	glm::mat4 projection = glm::perspective(
 		fov, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, zFar);
 
-	//moveLines(lines);
+	moveLines(lines);
 	std::cout << "zFar=" << zFar << std::endl;
 	for (auto& poly : lines) {
 		std::cout << poly.x << " " << poly.y << " " << poly.z << std::endl;
 	}
+	glm::vec3 movement(1.0f, 0.0f, 0);
 
 	while (!glfwWindowShouldClose(window)) {
 		float currentFrame = glfwGetTime();
@@ -224,10 +225,21 @@ int main() {
 		camera(shaderProgram);
 
 		glBindVertexArray(VAO);
-
 		for (auto& vert : lines) {
 			glm::mat4 model = glm::mat4(1.0f);
 
+			movement.x = 16.0f * deltaTime / 1.0f;
+			//movement.y = 64.0f * deltaTime / 1.0f;
+
+			vert = vert + movement;
+			//std::cout << "mov.x= " << movement.x << " movement.y=" << movement.y << " mov.z=" << movement.z << std::endl;
+			//std::cout << "vert.x=" << vert.x << " vert.y=" << vert.y << " vert.z=" << vert.z << std::endl;
+			if (vert.x > SCREEN_WIDTH) {
+				vert.x = 0.0f;
+			}
+			if (vert.y > SCREEN_HEIGHT) {
+				vert.y = 0.0f;
+			}
 			model = glm::translate(model, vert);
 			model = glm::scale(model, glm::vec3(8.0, 8.0, 1.0));
 
@@ -241,7 +253,10 @@ int main() {
 			if (err != GL_NO_ERROR) {
 				std::cout << " error " << err << std::endl;
 			}
+			
 		}
+		
+
 	
 
 	glfwSwapBuffers(window);
